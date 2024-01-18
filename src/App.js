@@ -21,6 +21,11 @@ const App = () => {
                     value="All American"
                     onChange={() => {}}
                 />
+                <img
+                    src={SearchIcon}
+                    alt="search"
+                    onClick={() => {}}
+                />
             </div>
         </div>
     );
