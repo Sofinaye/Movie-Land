@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import MovieCard from "./MovieCard"
 import SearchIcon from "./search.svg"
 //788ba869
  const API_URL = 'http://www.omdbapi.com?apikey=788ba869';
@@ -10,11 +11,12 @@ import SearchIcon from "./search.svg"
     "Poster": "https://m.media-amazon.com/images/M/MV5BNjA2OTIxZmYtMDI4OC00NjJlLTgxNzEtYmJlMmM2MGUwNTk4XkEyXkFqcGdeQXVyODUzNDU3NTA@._V1_SX300.jpg"
 }
 const App = () => {
+    const [movies, setMovies] = useState([]);
     const searchMovies = async (title) => {
         const response = await fetch(`${API_URL}&s=${title}`);
         const data = await response.json();
         
-        console.log(data.Search);
+        setMovies(data.Search);
     }
     useEffect(()=>{
         searchMovies('All american');
@@ -34,21 +36,19 @@ const App = () => {
                     onClick={() => {}}
                 />
             </div>
-            <div className="container">
-                <div className="movie">
-                    <div>
-                        <p>{movie1.Year}</p>
+            {movies?.length > 0
+                ? (
+                    <div className="container">
+                        {movies.map((movie) => (
+                            <MovieCard movie={movie}/>
+                        ))}
                     </div>
-                    <div>
-                        <img src={movie1.Poster !== 'N/A' ? movie1.Poster : 'https://via.placeholder.com/400'} alt={movie1.Title}/>
+                ) : (
+                    <div className="empty">
+                        <h2>No movies found</h2>
                     </div>
-                    <div>
-                        <span>{movie1.Type}</span>
-                        <h3>{movie1.Title}</h3>
-                    </div>
-                </div>
-
-            </div>
+                )}
+            
         </div>
     );
 }
